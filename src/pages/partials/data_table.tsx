@@ -131,15 +131,57 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
     }
 
     getPaginatedData() {
+        const { data }          = this.props;
         const { currentPage }   = this.state;
         const start_index       = (currentPage - 1) * ITEMS_PER_PAGE;
         const end_index         = currentPage *  ITEMS_PER_PAGE;
-        return surveyFormData.slice(start_index, end_index);
+        return data.slice(start_index, end_index);
     }
 
     handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         this.setState({ currentPage : value });
     };
+
+    renderTableHeader() {
+        const { data } = this.props;
+        if (data.length === 0) return null;
+        const keys = Object.keys(data[0]);
+        return (
+            <thead className="table-dark">
+                <tr>
+                    {
+                        keys.map((key, index) => (
+                            <th key={index}>{key}</th>
+                        )
+                    )}
+                </tr>
+            </thead>
+        );
+    }
+
+    renderTableBody(paginatedData: { [key: string]: any }[]) {
+        return (
+            <tbody>
+                {paginatedData.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {Object.values(row).map((value, colIndex) => (
+                            <td key={colIndex}>
+                                {
+                                    Array.isArray(value) ? (
+                                        JSON.stringify(value)
+                                    ) : typeof value === 'object' ? (
+                                        JSON.stringify(value)
+                                    ) : (
+                                        value
+                                    )
+                                }
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        );
+    }
 
     render() {
         const { currentData, currentPage } = this.state;
@@ -147,32 +189,12 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
         
         return (
             <>
-                <table className="table table-bordered table-striped">
-                    <thead className="table-dark">
-                    <tr>
-                        <th>Nom</th>
-                        <th>Loisirs</th>
-                        <th>Genre</th>
-                        <th>Pays</th>
-                        <th>Aime SurveyJS</th>
-                        <th>Satisfaction</th>
-                        <th>Commentaires</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {paginatedData.map((entry, index) => (
-                        <tr key={index}>
-                        <td>{entry.nom}</td>
-                        <td>{entry.hobbies.join(", ")}</td>
-                        <td>{entry.genre}</td>
-                        <td>{entry.pays}</td>
-                        <td>{entry.aime_survey ? "Oui" : "Non"}</td>
-                        <td>{entry.satisfaction}</td>
-                        <td>{entry.feedback}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                        {this.renderTableHeader()}
+                        {this.renderTableBody(paginatedData)}
+                    </table>
+                </div>
 
                 <Pagination
                     count={Math.ceil(currentData.length / ITEMS_PER_PAGE)}
