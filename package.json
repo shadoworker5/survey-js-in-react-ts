@@ -7,7 +7,12 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "survey-analytics": "^1.12.17",
+    "survey-core": "^1.12.17",
+    "survey-creator-core": "^1.12.17",
+    "survey-creator-react": "^1.12.17",
+    "survey-react-ui": "^1.12.17"
   },
   "scripts": {
     "start": "react-scripts start",
