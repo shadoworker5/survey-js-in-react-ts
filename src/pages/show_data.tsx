@@ -38,7 +38,7 @@ class ShowData extends Component<{}, ShowDataState> {
 
                 <div className="card">
                     <div className="card-body">
-                        { show_type === 'table' && <ShowDataList /> }
+                        { show_type === 'table' && <ShowDataList data={surveyFormData} /> }
                         { show_type === 'analytic' && <ShowDataAnalytic surveyForm={surveyFormJson} surveyFormData={surveyFormData} /> }
                         { show_type === 'map' && <OpenStreetMap /> }
                     </div>

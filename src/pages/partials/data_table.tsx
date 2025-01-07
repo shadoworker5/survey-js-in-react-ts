@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Pagination } from '@mantine/core';
+import { Pagination } from '@mui/material';
 
 const surveyFormData = [
     {
@@ -92,48 +92,59 @@ const surveyFormData = [
         satisfaction: 4,
         feedback: "Bonne expérience, mais quelques bugs.",
     },
+    {
+        nom: "Albert Einstein",
+        hobbies: ["Lecture", "Voyages"],
+        genre: "Homme",
+        pays: "Allemagne",
+        aime_survey: true,
+        satisfaction: 4,
+        feedback: "Bonne expérience, mais quelques bugs.",
+    },
 ];
 
 interface ShowDataListState {
     show_type: string;
     currentPage: number;
-    pageCount: number;
     currentData: any[]
 }
 
-// interface ShowDataListProps {
-//     data: any[];
-// }
+interface ShowDataListProps {
+    data: any[];
+}
 
 const ITEMS_PER_PAGE = 5;
 
-
-class ShowDataList extends Component<{}, ShowDataListState> {
-    constructor(props: {}) {
+class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
+    constructor(props: ShowDataListProps) {
         super(props);
 
         this.state = {
             show_type: 'table',
-            currentPage: 0,
-            pageCount: 0,
+            currentPage: 1,
             currentData: []
         };
     }
 
     componentDidMount(): void {
-        const { currentPage } = this.state;
-        const offset = currentPage * ITEMS_PER_PAGE;
-        const data = surveyFormData.slice(offset, offset + ITEMS_PER_PAGE);
-        const count = Math.ceil(surveyFormData.length / ITEMS_PER_PAGE);
-        this.setState({ currentData: data, pageCount: count });
+        this.setState({ currentData: surveyFormData });
     }
 
-    handlePageChange = ({ selected }: { selected: number }) => {
-        this.setState({ currentPage : selected });
+    getPaginatedData() {
+        const { currentPage }   = this.state;
+        const start_index       = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end_index         = currentPage *  ITEMS_PER_PAGE;
+        return surveyFormData.slice(start_index, end_index);
+    }
+
+    handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        this.setState({ currentPage : value });
     };
 
     render() {
-        const { currentData, pageCount } = this.state;
+        const { currentData, currentPage } = this.state;
+        const paginatedData = this.getPaginatedData();
+        
         return (
             <>
                 <table className="table table-bordered table-striped">
@@ -149,7 +160,7 @@ class ShowDataList extends Component<{}, ShowDataListState> {
                     </tr>
                     </thead>
                     <tbody>
-                    {currentData.map((entry, index) => (
+                    {paginatedData.map((entry, index) => (
                         <tr key={index}>
                         <td>{entry.nom}</td>
                         <td>{entry.hobbies.join(", ")}</td>
@@ -163,12 +174,13 @@ class ShowDataList extends Component<{}, ShowDataListState> {
                     </tbody>
                 </table>
 
-                {/* <Pagination
-                    total={Math.ceil(data.length / itemsPerPage)}
-                    page={activePage}
-                    onChange={setActivePage}
-                    mt="lg"
-                /> */}
+                <Pagination
+                    count={Math.ceil(currentData.length / ITEMS_PER_PAGE)}
+                    page={currentPage}
+                    onChange={this.handlePageChange}
+                    color="primary"
+                    sx={{ mt: 2 }}
+                />
             </>
         );
     }
