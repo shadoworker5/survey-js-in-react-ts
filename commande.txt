@@ -3,3 +3,4 @@ npm install survey-analytics survey-core survey-react-ui
 npm install survey-creator-core survey-creator-react
 npm install bootstrap
 npm install react-router-dom@^6
+npm install react-leaflet leaflet
