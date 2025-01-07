@@ -2,3 +2,4 @@ npx create-react-app survey-typescript --template typescript
 npm install react-router-dom
 npm install survey-analytics survey-core survey-react-ui
 npm install survey-creator-core survey-creator-react
+npm install bootstrap
