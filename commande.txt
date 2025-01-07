@@ -4,3 +4,4 @@ npm install survey-creator-core survey-creator-react
 npm install bootstrap
 npm install react-router-dom@^6
 npm install react-leaflet leaflet
+npm install @mui/material @emotion/react @emotion/styled
