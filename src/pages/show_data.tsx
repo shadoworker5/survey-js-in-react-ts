@@ -2,6 +2,7 @@ import React, { useState, useTransition } from 'react';
 import ShowDataList from './partials/data_table.tsx';
 import ShowDataAnalytic from './partials/analytic.tsx';
 import OpenStreetMap from './partials/map.tsx';
+import TableShowData from './partials/tabulator.tsx';
 import surveyFormJson from './form.json';
 import surveyFormData from './data.json';
 
@@ -24,9 +25,10 @@ const ShowData: React.FC = () => {
                     onChange={handleOnChange}
                     value={showType}
                 >
-                    <option value="table">Liste des données</option>
-                    <option value="analytic">Tableau de bord</option>
-                    <option value="map">Carte</option>
+                    <option value="table"> Liste des données </option>
+                    <option value="tabulator"> Vue Tabulaire </option>
+                    <option value="analytic"> Dashboard </option>
+                    <option value="map"> Carte </option>
                 </select>
             </div>
 
@@ -41,6 +43,12 @@ const ShowData: React.FC = () => {
                 <div className="card">
                     <div className="card-body">
                         {showType === 'table' && <ShowDataList data={surveyFormData} />}
+                        {showType === 'tabulator' && (
+                            <TableShowData
+                                surveyForm={surveyFormJson}
+                                surveyFormData={surveyFormData}
+                            />
+                        )}
                         {showType === 'analytic' && (
                             <ShowDataAnalytic
                                 surveyForm={surveyFormJson}
