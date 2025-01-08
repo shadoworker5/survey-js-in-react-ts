@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
@@ -142,13 +142,11 @@ const surveyJson = {
 
 const CreateForm: React.FC = () => {
     const survey = new Model(surveyJson);
-    // const surveyComplete = useCallback((survey) => {
-    //     const userId = 1;
-    //     survey.setValue("userId", userId);
-    //     console.log(survey.data);
-    // }, []);
+    const surveyComplete = useCallback((survey) => {
+        // TODO
+    }, []);
 
-    // survey.onComplete.add(surveyComplete);
+    survey.onComplete.add(surveyComplete);
 
     return <Survey model={survey} />;
 };
