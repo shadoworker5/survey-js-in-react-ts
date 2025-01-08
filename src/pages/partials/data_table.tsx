@@ -1,116 +1,18 @@
 import React, { Component } from 'react';
 import { Pagination } from '@mui/material';
-
-const surveyFormData = [
-    {
-        nom: "Jean Dupont",
-        hobbies: ["Sport", "Lecture"],
-        genre: "Homme",
-        pays: "France",
-        aime_survey: true,
-        satisfaction: 5,
-        feedback: "Super expérience avec SurveyJS !",
-    },
-    {
-        nom: "Marie Curie",
-        hobbies: ["Voyages", "Jeux vidéo"],
-        genre: "Femme",
-        pays: "Pologne",
-        aime_survey: false,
-        satisfaction: 3,
-        feedback: "Peut être amélioré.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-    {
-        nom: "Albert Einstein",
-        hobbies: ["Lecture", "Voyages"],
-        genre: "Homme",
-        pays: "Allemagne",
-        aime_survey: true,
-        satisfaction: 4,
-        feedback: "Bonne expérience, mais quelques bugs.",
-    },
-];
+import EditDataModal from '../edit_data.tsx'
 
 interface ShowDataListState {
     show_type: string;
     currentPage: number;
-    currentData: any[]
+    currentData: any[];
+    isModalOpen: boolean;
+    selectedRowData: any | null;
 }
 
 interface ShowDataListProps {
     data: any[];
+    surveyForm: any;
 }
 
 const ITEMS_PER_PAGE = 5;
@@ -122,12 +24,15 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
         this.state = {
             show_type: 'table',
             currentPage: 1,
-            currentData: []
+            currentData: [],
+            isModalOpen: false,
+            selectedRowData: null,
         };
     }
 
     componentDidMount(): void {
-        this.setState({ currentData: surveyFormData });
+        const { data } = this.props;
+        this.setState({ currentData: data });
     }
 
     getPaginatedData() {
@@ -159,11 +64,19 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
         );
     }
 
+    handleEditData = (data: any) => {
+        this.setState({ isModalOpen: true, selectedRowData: data });
+    };
+
+    closeModal = () => {
+        this.setState({ isModalOpen: false, selectedRowData: null });
+    };
+
     renderTableBody(paginatedData: { [key: string]: any }[]) {
         return (
             <tbody>
                 {paginatedData.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={rowIndex} onClick={ e => this.handleEditData(row) }>
                         {Object.values(row).map((value, colIndex) => (
                             <td key={colIndex}>
                                 {
@@ -184,8 +97,10 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
     }
 
     render() {
-        const { currentData, currentPage } = this.state;
+        const { currentData, currentPage, isModalOpen, selectedRowData } = this.state;
+        const { surveyForm } = this.props;
         const paginatedData = this.getPaginatedData();
+        // return <EditDataModal surveyFormJson={data} surveyDataJson={data} isModalOpen={true} />
         
         return (
             <>
@@ -203,6 +118,15 @@ class ShowDataList extends Component<ShowDataListProps, ShowDataListState> {
                     color="primary"
                     sx={{ mt: 2 }}
                 />
+
+                {isModalOpen && (
+                    <EditDataModal
+                        surveyFormJson={surveyForm}
+                        surveyDataJson={selectedRowData}
+                        isModalOpen={isModalOpen}
+                        onClose={this.closeModal}
+                    />
+                )}
             </>
         );
     }

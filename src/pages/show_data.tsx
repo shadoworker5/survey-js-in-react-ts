@@ -42,7 +42,7 @@ const ShowData: React.FC = () => {
             { !isPending && (
                 <div className="card">
                     <div className="card-body">
-                        {showType === 'table' && <ShowDataList data={surveyFormData} />}
+                        {showType === 'table' && <ShowDataList data={surveyFormData} surveyForm={surveyFormJson} />}
                         {showType === 'tabulator' && (
                             <TableShowData
                                 surveyForm={surveyFormJson}
