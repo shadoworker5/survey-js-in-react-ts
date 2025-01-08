@@ -8,6 +8,7 @@
     "@mui/material": "^6.3.1",
     "bootstrap": "^5.3.3",
     "cra-template-typescript": "1.2.0",
+    "jspdf": "^2.5.2",
     "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -18,7 +19,8 @@
     "survey-core": "^1.12.17",
     "survey-creator-core": "^1.12.17",
     "survey-creator-react": "^1.12.17",
-    "survey-react-ui": "^1.12.17"
+    "survey-react-ui": "^1.12.17",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
