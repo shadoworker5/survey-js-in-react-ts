@@ -109,10 +109,10 @@ const surveyJson = {
           "name": "competences",
           "title": "Listez vos compétences",
           "columns": [
-            { "name": "competence", "title": "Compétence" },
-            { "name": "experience", "title": "Années d'expérience", "cellType": "text" }
+            { "name": "competence", "title": "Compétence", "cellType": "text" },
+            { "name": "experience", "title": "Années d'expérience", "cellType": "text", "inputType": "number" }
           ],
-          "rowCount": 2
+          "rowCount": 1
         },
         {
           "type": "html",

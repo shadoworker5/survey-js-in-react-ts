@@ -123,15 +123,17 @@
                     "columns": [
                         {
                             "name": "competence",
-                            "title": "Compétence"
+                            "title": "Compétence",
+                            "cellType": "text"
                         },
                         {
                             "name": "experience",
                             "title": "Années d'expérience",
-                            "cellType": "text"
+                            "cellType": "text",
+                            "inputType": "number"
                         }
                     ],
-                    "rowCount": 2
+                    "rowCount": 1
                 },
                 {
                     "type": "html",
