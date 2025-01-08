@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { SurveyCreator, SurveyCreatorComponent } from 'survey-creator-react';
 import { surveyLocalization, StylesManager } from 'survey-core';
 import { editorLocalization } from 'survey-creator-core';
@@ -6,13 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'survey-core/defaultV2.min.css';
 import 'survey-creator-core/survey-creator-core.css';
 
-class SurveyrBuilder extends React.Component {
+class SurveyrBuilder extends Component {
     render() {
         const creatorOptions = {
             showLogicTab: true,
             isAutoSave: false,
             showTranslationTab: true,
-            haveCommercialLicense: true,
+            haveCommercialLicense: false,
         };
         const creator = new SurveyCreator(creatorOptions);
 
