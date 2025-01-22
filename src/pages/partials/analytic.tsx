@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Model } from 'survey-core';
-import { VisualizationPanel } from 'survey-analytics';
+import { VisualizationPanel, VisualizationManager, NpsVisualizer } from 'survey-analytics';
 import 'survey-analytics/survey.analytics.min.css';
 import 'survey-core/defaultV2.min.css';
+import './textChartVisualizer.js';
+import './pollVisualizer.js';
 
 interface ShowDataAnalyticProps {
     surveyForm: any;
     surveyFormData: any[];
 }
+
+VisualizationManager.registerVisualizer('rating', NpsVisualizer);
 
 class ShowDataAnalytic extends Component<ShowDataAnalyticProps> {
     componentDidMount(): void {

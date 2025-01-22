@@ -15,14 +15,46 @@ interface TableShowDataProps {
 }
 
 class TableShowData extends Component<TableShowDataProps> {
+    private vizPanel!: Tabulator;
+
     componentDidMount() {
         const { surveyForm, surveyFormData } = this.props;
-        const survey    = new Model(surveyForm);
-        const vizPanel  = new Tabulator(survey, surveyFormData);
-        vizPanel.render('show_dashboard');
+        const survey = new Model(surveyForm);
+        this.vizPanel = new Tabulator(survey, surveyFormData);
+        this.vizPanel.render('show_dashboard');
     }
+
+    exportToJson = () => {
+        if (!this.vizPanel) return;
+
+        const data = this.vizPanel.data;
+        const jsonString = JSON.stringify(data, null, 2);
+
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'exported_data.json';
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     render() {
-        return (<div id="show_dashboard"></div>)
+        return (
+            <div>
+                <div className="d-flex justify-content-end mb-3">
+                    <button className="btn btn-primary" onClick={this.exportToJson}>
+                        Exporter en JSON
+                    </button>
+                </div>
+                <div id="show_dashboard"></div>
+            </div>
+        );
     }
 }
+
 export default TableShowData;
