@@ -14,10 +14,10 @@ interface ShowDataAnalyticProps {
 VisualizationManager.registerVisualizer('rating', NpsVisualizer);
 
 const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormData }) => {
-    const [filters, setFilters] = useState<{ field: string; value: string }[]>([]);
-    const [filteredData, setFilteredData] = useState<any[]>(surveyFormData);
-    const [variables, setVariables] = useState<any[]>();
-    const [formValue, setFormValue] = useState<any[]>();
+    const [filters, setFilters]             = useState<{ field: string; value: string }[]>([]);
+    const [filteredData, setFilteredData]   = useState<any[]>(surveyFormData);
+    const [variables, setVariables]         = useState<any[]>();
+    const [formValue, setFormValue]         = useState<{ index: any; value: string[] }[]>([]);
 
     useEffect(() => {
         const survey        = new Model(surveyForm);
@@ -35,19 +35,17 @@ const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormD
 
     const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number, key: 'field' | 'value') => {
         let value = event.target.value;
-        const updatedFilters = [...filters];
+        const updated_filters = [...filters];
+
         if (value === 'Veuillez choisir une variable') value = '';
-        updatedFilters[index][key] = value;
-        setFilters(updatedFilters);
+        updated_filters[index][key] = value;
+        setFilters(updated_filters);
         if (key === 'field') {
-            getVariableValues(value);
+            getVariableValues(index, value);
         }
     };
 
-    const getVariableValues = (field: string) => {
-        let reset = new Set()
-        setFormValue([...reset]);
-        
+    const getVariableValues = (key: number, field: string) => {
         let get_data = [...surveyFormData];
         let data: any[] = [];
         get_data.map((item, _) => {
@@ -60,7 +58,7 @@ const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormD
             }
         });
         let get_unique_value = new Set(data);
-        setFormValue([...get_unique_value]);
+        setFormValue([...formValue, { index: key, value: [...get_unique_value] }]);
     };
 
     const applyFilters = () => {
@@ -73,6 +71,12 @@ const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormD
         }
         });
         setFilteredData(updated_data);
+    };
+    
+    const resetFilters = () => {
+        setFilters([]);
+        setFormValue([]);
+        setFilteredData([...surveyFormData]);
     };
     
     return (
@@ -92,8 +96,10 @@ const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormD
                         <div className="col-md-5">
                             <select className="form-control" value={filter.value} onChange={e => handleOnChange(e, index, 'value')} >
                                 <option key="key"> Veuillez choisir une valeur </option>
-                                {formValue?.map((name, item) => (
-                                    <option key={++item} value={name}> {name} </option>
+                                {formValue?.filter((__, i) => i == index ).map((name, item) => (
+                                    name.value.map((value, j) => (
+                                        <option key={++j} value={value}> {value} </option>
+                                    ))
                                 ))}
                             </select>
                         </div>
@@ -108,15 +114,18 @@ const ShowDataAnalyticV2: FC<ShowDataAnalyticProps> = ({ surveyForm, surveyFormD
                         </div>
                     </div>
                 ))}
-                {filters.length === 0 && (
-                    <button className="btn btn-primary" onClick={addFilter}>
-                        Ajouter un filtre
-                    </button>
-                )}
+                <button className="btn btn-primary" onClick={addFilter}>
+                    Ajouter un filtre
+                </button>
                 {filters.length > 0 && (
-                    <button className="btn btn-success ms-2" onClick={applyFilters}>
-                        Appliquer les filtres
-                    </button>
+                    <>
+                        <button className="btn btn-danger ms-2" onClick={resetFilters}>
+                            Supprimer tous les filtres
+                        </button>
+                        <button className="btn btn-success ms-2" onClick={applyFilters}>
+                            Appliquer les filtres
+                        </button>
+                    </>
                 )}
             </div>
 

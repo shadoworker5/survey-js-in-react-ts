@@ -10,10 +10,10 @@ import { Model } from 'survey-core';
 import Summary from './partials/summary.tsx';
 
 const ShowData: React.FC = () => {
-    const [showType, setShowType] = useState('table');
-    const [isPending, startTransition] = useTransition();
-    const [activeTab, setActiveTab] = useState('home');
-    const [countQuestions, setCountQuestions] = useState(0);
+    const [showType, setShowType]               = useState('table');
+    const [isPending, startTransition]          = useTransition();
+    const [activeTab, setActiveTab]             = useState('home');
+    const [countQuestions, setCountQuestions]   = useState(0);
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
